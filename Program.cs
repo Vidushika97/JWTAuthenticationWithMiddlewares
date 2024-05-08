@@ -5,6 +5,7 @@ using JWTAuthenticationWithMiddlewares.Services.UserService;
 using JWTAuthenticationWithMiddlewares;
 using Microsoft.EntityFrameworkCore;
 using JWTAuthenticationWithMiddlewares.Helpers.Utils.GlobalAttributes;
+using JWTAuthenticationWithMiddlewares.Middlewares;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,9 +25,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 //register custom services
-//builder.Services.AddScoped<ILoginDetailService, LoginDetailService>();
-//builder.Services.AddScoped<IStoryService, StoryService>();
-//builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IStoryService, StoryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 
@@ -43,6 +44,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+// app.UseAuthorization();
+app.UseJwtMiddleware();
 
 app.UseHttpsRedirection();
 
