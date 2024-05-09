@@ -18,6 +18,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.UserService
         public BaseResponse CreateUser(CreateUserRequest request)
         {
             BaseResponse response;
+            
             try
             {
 

@@ -18,6 +18,8 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
             _next = next;
         }
 
+        BaseResponse response;
+
         public Task Invoke(HttpContext httpContext)
         {
             string? token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("")[1];
@@ -30,9 +32,15 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
                     return _next(httpContext);
                 }
 
-                BaseResponse response = new BaseResponse(StatusCodes.Status401Unauthorized, new MessageDTO("Unauthorized"));
+                response = new BaseResponse
+                { 
+                    status_code = StatusCodes.Status401Unauthorized,
+                    data = new MessageDTO{ status = "Unauthorized" }
+                };
+
                 httpContext.Response.StatusCode = response.status_code;
                 httpContext.Response.ContentType = "application/json";
+
                 return httpContext.Response.WriteAsJsonAsync(response);
 
             }
@@ -44,37 +52,43 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
                 }
                 else
                 {
-                    BaseResponse response = new BaseResponse(StatusCodes.Status401Unauthorized, new MessageDTO("Unauthorized"));
-                    httpContext.Response.StatusCode = ResponseCachingExtensions.status_code;
+                    response = new BaseResponse
+                    {
+                        status_code = StatusCodes.Status401Unauthorized,
+                        data = "unauthorized"
+                    };
+
+                    httpContext.Response.StatusCode = response.status_code;
                     httpContext.Response.ContentType = "application/json";
+                    return httpContext.Response.WriteAsJsonAsync(response);
                 }
-                   
-
-
-            }
-            ///<summary>
-            ///This method is used to check incoming request is from a enabled unauthorized request
-            ///</summary>
-            ///<param name="httpContext"></param>
-            ///<returns></returns>
+                  
+            }    
             
-            Private bool IsEnabledUnauthorizedRoute(HttpContext httpContext)
-            {
-                List<string> enableRoutes = new List<string>
+        }
+
+        ///<summary>
+        ///This method is used to check incoming request is from a enabled unauthorized request
+        ///</summary>
+        ///<param name="httpContext"></param>
+        ///<returns></returns>
+
+
+        private bool IsEnabledUnauthorizedRoute(HttpContext httpContext)
+        {
+            List<string> enableRoutes = new List<string>
                 {
                     "/api/User/createUser",
                     "/api/auth/authenticate",
                 };
 
-                bool isEnableUnauthorizedRoute = false;
+            bool isEnableUnauthorizedRoute = false;
 
-                if (httpContext.Request.Path.Value is not null)
-                {
-                    isEnableUnauthorizedRoute = enabledRoutes.Contains(httpContext.Request.Path.Value);
-                }
-                return isEnableUnauthorizedRoute;
+            if (httpContext.Request.Path.Value is not null)
+            {
+                isEnableUnauthorizedRoute = enableRoutes.Contains(httpContext.Request.Path.Value);
             }
-            
+            return isEnableUnauthorizedRoute;
         }
     }
 

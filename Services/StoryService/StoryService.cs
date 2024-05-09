@@ -64,7 +64,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.StoryService
 
             try
             {
-                List<StoryDTO> students = new List<StoryDTO>();
+                List<StoryDTO> stories = new List<StoryDTO>();
 
                 using (context)
                 {

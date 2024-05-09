@@ -9,6 +9,9 @@ namespace JWTAuthenticationWithMiddlewares.DTOs.Requests
     
         [Required]
         public string user_id { get; set; }
+
+        [Required]
+        public string password { get; set; }
     }
 }
 
