@@ -8,7 +8,8 @@ namespace JWTAuthenticationWithMiddlewares.Helpers.Utils
 {
     public static class JwtUtils
     {
-        static string secret = "3hO4Lash4CzZfk0Ga6yQhd48208RGTAu";
+
+        const string secret = "3hO4Lash4CzZfk0Ga6yQhd48208RGTAu";
 
         public static string GenerateJwtToken(UserModel user)
         {
@@ -26,7 +27,7 @@ namespace JWTAuthenticationWithMiddlewares.Helpers.Utils
             SecurityTokenDescriptor tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = DateTime.UtcNow.AddMinutes(600),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
 
@@ -58,9 +59,9 @@ namespace JWTAuthenticationWithMiddlewares.Helpers.Utils
                 //get claims
                 long userId = long.Parse(validatedJWT.Claims.First(claim => claim.Type == "user_id").Value);
 
-                using(ApplicationDbContext dbContext = new ApplicationDbContext())
+                using(ApplicationDbContext dbcontext = new ApplicationDbContext())
                 {
-                    UserModel? user = dbContext.Users.FirstOrDefault(u => u.user_id == userId);
+                    UserModel user = dbcontext.Users.FirstOrDefault(u => u.user_id == userId);
 
                     if(user == null)
                     {
@@ -69,7 +70,7 @@ namespace JWTAuthenticationWithMiddlewares.Helpers.Utils
                     else
                     {
                         //check is the given token is the last issued token to the user
-                        LoginDetailModel loginDetail = dbContext.LoginDetails.Where(ld => ld.user_id == userId).First();
+                        LoginDetailModel loginDetail = dbcontext.LoginDetails.Where(ld => ld.user_id == userId).First();
 
                         //login detail must available
                         if(loginDetail.token != jwt)

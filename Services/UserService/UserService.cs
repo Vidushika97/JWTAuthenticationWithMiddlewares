@@ -1,6 +1,7 @@
 ﻿using JWTAuthenticationWithMiddlewares.DTOs.Requests;
 using JWTAuthenticationWithMiddlewares.DTOs.Responses;
 using JWTAuthenticationWithMiddlewares.Models;
+using JWTAuthenticationWithMiddlewares.Services.AuthService;
 
 
 namespace JWTAuthenticationWithMiddlewares.Services.UserService
@@ -9,11 +10,13 @@ namespace JWTAuthenticationWithMiddlewares.Services.UserService
     {
         //variable to store application db context
         private readonly ApplicationDbContext context;
+        private readonly IAuthService authService;
 
-        public UserService(ApplicationDbContext applicationDbContext)
+        public UserService(ApplicationDbContext applicationDbContext, IAuthService authService)
         {
             //get db context through DI
             context = applicationDbContext;
+            this.authService = authService;
         }
         public BaseResponse CreateUser(CreateUserRequest request)
         {
@@ -29,7 +32,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.UserService
                 newUser.last_name = request.last_name;
                 newUser.email = request.email;
                 newUser.username = request.username;
-                newUser.password = request.password;
+                newUser.password = authService.GetMD5Hash(request.password);
                
 
                 using (context)
@@ -42,7 +45,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.UserService
                 response = new BaseResponse
                 {
                     status_code = StatusCodes.Status200OK,
-                    data = new { message = "Successfully created the new student" }
+                    data = new { message = "Successfully created the new user" }
                 };
 
                 return response;

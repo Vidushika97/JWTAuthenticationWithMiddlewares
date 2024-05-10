@@ -40,9 +40,6 @@ namespace JWTAuthenticationWithMiddlewares.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("user_id")
-                        .IsUnique();
-
                     b.ToTable("Login_Detail");
                 });
 
@@ -70,8 +67,6 @@ namespace JWTAuthenticationWithMiddlewares.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("id");
-
-                    b.HasIndex("user_id");
 
                     b.ToTable("Story");
                 });
@@ -111,36 +106,6 @@ namespace JWTAuthenticationWithMiddlewares.Migrations
                     b.HasKey("user_id");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("JWTAuthenticationWithMiddlewares.Models.LoginDetailModel", b =>
-                {
-                    b.HasOne("JWTAuthenticationWithMiddlewares.Models.UserModel", "User")
-                        .WithOne("Login_Detail")
-                        .HasForeignKey("JWTAuthenticationWithMiddlewares.Models.LoginDetailModel", "user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("JWTAuthenticationWithMiddlewares.Models.StoryModel", b =>
-                {
-                    b.HasOne("JWTAuthenticationWithMiddlewares.Models.UserModel", "User")
-                        .WithMany("Stories")
-                        .HasForeignKey("user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("JWTAuthenticationWithMiddlewares.Models.UserModel", b =>
-                {
-                    b.Navigation("Login_Detail")
-                        .IsRequired();
-
-                    b.Navigation("Stories");
                 });
 #pragma warning restore 612, 618
         }

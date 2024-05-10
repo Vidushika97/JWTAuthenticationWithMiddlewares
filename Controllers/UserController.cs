@@ -19,7 +19,7 @@ namespace JWTAuthenticationWithMiddlewares.Controllers
 
         //endpoints
 
-        [HttpPost("create")]
+        [HttpPost("createUser")]
         public BaseResponse CreateUser(CreateUserRequest request)
         {
             return userService.CreateUser(request);

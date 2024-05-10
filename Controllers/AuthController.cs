@@ -19,7 +19,7 @@ namespace JWTAuthenticationWithMiddlewares.Controllers
 
         //endpoints
 
-        [HttpPost("save")]
+        [HttpPost("authenticate")]
         public BaseResponse Authenticate(AuthenticateRequest request)
         {
             return authService.Authenticate(request);

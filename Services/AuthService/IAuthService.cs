@@ -7,6 +7,6 @@ namespace JWTAuthenticationWithMiddlewares.Services.AuthService
     {
         BaseResponse Authenticate(AuthenticateRequest request);
 
-       
+        String GetMD5Hash(string input);
     }
 }

@@ -21,9 +21,6 @@ namespace JWTAuthenticationWithMiddlewares.Models
         [Required]
         public DateTime created_at { get; set; }
 
-        // Navigation property for one-to-one relationship with User
-        [ForeignKey("user_id")]
-        public UserModel User { get; set; }
 
     }
 }

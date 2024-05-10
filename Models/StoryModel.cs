@@ -24,9 +24,7 @@ namespace JWTAuthenticationWithMiddlewares.Models
         [Required]
         public DateTime updated_at { get; set;}
 
-        // Navigation property for many-to-one relationship with User
-        [ForeignKey("user_id")]
-        public UserModel User { get; set; }
+
 
     }
 }

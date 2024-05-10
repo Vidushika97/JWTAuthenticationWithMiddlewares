@@ -22,9 +22,13 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
 
         public Task Invoke(HttpContext httpContext)
         {
-            string? token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("")[1];
+            BaseResponse response;
+            //string? token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split("")[1];
+            string? authorizationHeader = httpContext.Request.Headers["Authorization"].FirstOrDefault();
+            string? token = authorizationHeader?.Split(' ')[1];
 
-            if(token == null)
+
+            if (token == null)
             {
                 //check incoming request is from a enabled unauthorized route
                 if(IsEnabledUnauthorizedRoute(httpContext))
@@ -35,7 +39,7 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
                 response = new BaseResponse
                 { 
                     status_code = StatusCodes.Status401Unauthorized,
-                    data = new MessageDTO{ status = "Unauthorized" }
+                    data = new MessageDTO{ status = "Unauthorized1" }
                 };
 
                 httpContext.Response.StatusCode = response.status_code;
@@ -55,7 +59,7 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
                     response = new BaseResponse
                     {
                         status_code = StatusCodes.Status401Unauthorized,
-                        data = "unauthorized"
+                        data = "unauthorized2"
                     };
 
                     httpContext.Response.StatusCode = response.status_code;
@@ -79,7 +83,7 @@ namespace JWTAuthenticationWithMiddlewares.Middlewares
             List<string> enableRoutes = new List<string>
                 {
                     "/api/User/createUser",
-                    "/api/auth/authenticate",
+                    "/api/Auth/authenticate",
                 };
 
             bool isEnableUnauthorizedRoute = false;

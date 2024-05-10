@@ -39,7 +39,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.StoryService
                 response = new BaseResponse
                 {
                     status_code = StatusCodes.Status200OK,
-                    data = new { message = "Successfully created the new student" }
+                    data = new { message = "Successfully created the new story" }
                 };
 
                 return response;

@@ -11,7 +11,8 @@ using JWTAuthenticationWithMiddlewares.Middlewares;
 var builder = WebApplication.CreateBuilder(args);
 
 //add global attributes
-GlobalAttributes.mysqlConfiguration.connectionString = builder.Configuration.GetConnectionString("MySqlConnection");
+GlobalAttributes.mysqlConfiguration.connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//GlobalAttributes.mysqlConfiguration.connectionString = "server=localhost;port = 3306;database=jwt_authentication_with_middlewares_db;user=root;password= ''";
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -19,8 +20,7 @@ builder.Services.AddControllers();
 // Add Application Db Context
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
-
-    var connectionString = builder.Configuration.GetConnectionString("Defaultconnection");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 

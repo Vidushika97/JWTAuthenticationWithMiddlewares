@@ -32,11 +32,7 @@ namespace JWTAuthenticationWithMiddlewares.Models
         [Required]
         public DateTime updated_at { get; set;}
 
-        // Navigation property for one-to-one relationship with LoginDetail
-        public LoginDetailModel Login_Detail { get; set; }
 
-        // Navigation property for one-to-many relationship with Story
-        public List<StoryModel> Stories { get; set; }
 
     }
 }

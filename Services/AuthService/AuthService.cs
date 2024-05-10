@@ -22,7 +22,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.AuthService
             context = applicationDbContext;
         }
 
-        public static string GetMD5Hash(string input)
+        public string GetMD5Hash(string input)
         {
             using (var md5Hash = MD5.Create())
             {
@@ -66,7 +66,7 @@ namespace JWTAuthenticationWithMiddlewares.Services.AuthService
                     string jwt = JwtUtils.GenerateJwtToken(user);
 
                     //save token in login details
-                    LoginDetailModel? loginDetail = context.LoginDetails.Where(ld => ld.user_id == user.user_id).FirstOrDefault();
+                    LoginDetailModel loginDetail = context.LoginDetails.Where(ld => ld.user_id == user.user_id).FirstOrDefault();
 
                     if (loginDetail == null)
                     {
